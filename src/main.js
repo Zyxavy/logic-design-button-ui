@@ -3,7 +3,11 @@ let brightness=75,color={r:255,g:176,b:0};
 let knobA={pk:0,bk:135},drag=null,dragY=0,dragA=0;
 
 function setRocker(on){
-  document.getElementById('lever-group').setAttribute('transform',on?'rotate(-20,40,60)':'rotate(20,40,60)');
+const track=document.getElementById('sky-track');
+  const pill=document.getElementById('toggle-pill');
+  if(track){track.classList.toggle('on',on);track.classList.toggle('off',!on);}
+  if(pill){pill.classList.toggle('on',on);}
+
 }
 function setAdvRocker(on){
   document.getElementById('adv-lever-g').setAttribute('transform',on?'rotate(-16,24,35)':'rotate(16,24,35)');
@@ -12,11 +16,11 @@ function setAdvRocker(on){
 function togglePower(){
   isPowered=!isPowered;
   setRocker(isPowered);
-  document.getElementById('t-on-lbl').classList.toggle('vis',isPowered);
-  document.getElementById('power-icon').classList.toggle('lit',isPowered);
+  const onLbl=document.getElementById('t-on-lbl'); if(onLbl) onLbl.classList.toggle('vis',isPowered);
+  const picon=document.getElementById('power-icon'); if(picon) picon.classList.toggle('lit',isPowered);
+
   const seg=document.getElementById('seg-display');
-  seg.textContent=isPowered?'ON':'OFF';
-  seg.classList.toggle('off-state',!isPowered);
+  if(seg){ seg.textContent=isPowered?'ON':'OFF'; seg.classList.toggle('off-state',!isPowered); }
   if(!isPowered){
     if(isStrobe){isStrobe=false;stopStrobeAnim();updBtn('btn-strobe','dot-strobe',false)}
     if(isBlink){isBlink=false;stopBlinkAnim();updBtn('btn-blink','dot-blink',false)}
@@ -90,11 +94,11 @@ function switchToSimple(){
     s.classList.add('mbi');
     isPowered=advPowered;
     setRocker(isPowered);
-    document.getElementById('t-on-lbl').classList.toggle('vis',isPowered);
-    document.getElementById('power-icon').classList.toggle('lit',isPowered);
+    const onLbl=document.getElementById('t-on-lbl'); if(onLbl) onLbl.classList.toggle('vis',isPowered);
+    const picon=document.getElementById('power-icon'); if(picon) picon.classList.toggle('lit',isPowered);
+
     const seg=document.getElementById('seg-display');
-    seg.textContent=isPowered?'ON':'OFF';
-    seg.classList.toggle('off-state',!isPowered);
+    if(seg){ seg.textContent=isPowered?'ON':'OFF'; seg.classList.toggle('off-state',!isPowered); }
     setTimeout(()=>s.classList.remove('mbi'),440);
   },430);
 }

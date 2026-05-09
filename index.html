@@ -17,102 +17,26 @@
     <button class="back-btn">←</button>
     <span class="panel-title">Simple Mode LED Control</span>
   </div>
-  <div class="simple-body">
-    <div class="seg-display off-state" id="seg-display">OFF</div>
+   <div class="simple-body daynight-body">
+    <div class="time-badge">TIME: 9:30 AM</div>
+    <div class="sky-track" id="sky-track">
+      <div class="sun" id="sun"></div>
+      <div class="moon" id="moon"></div>
+      <div class="orbit-arrow orbit-arrow-up">↗</div>
+      <div class="orbit-arrow orbit-arrow-down">↙</div>
+    </div>
+    <div class="toggle-card" onclick="togglePower()">
+      <div class="toggle-pill" id="toggle-pill"><div class="toggle-knob" id="toggle-knob"></div></div>
+      <div class="toggle-labels"><span>ON</span><span>OFF</span></div>
+    </div>
     <div class="simple-controls">
 
-      <!-- STROBE -->
-      <div class="ind-btn" id="btn-strobe" onclick="toggleStrobe()">
-        <div class="idot" id="dot-strobe"></div>
-        <div class="ind-btn-housing"><span class="ind-btn-text">STROBE</span></div>
-        <span class="ind-btn-label">STROBE</span>
-      </div>
-
-      <!-- ROCKER -->
-      <div class="toggle-section">
-        <div class="toggle-side-labels">
-          <span class="t-on-label" id="t-on-lbl">ON</span>
-          <span class="t-off-label">OFF</span>
-        </div>
-        <div class="rocker-wrap" onclick="togglePower()">
-          <svg id="rocker-svg" viewBox="0 0 80 120" width="80" height="120" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="hg" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stop-color="#2e2e2e"/>
-                <stop offset="100%" stop-color="#141414"/>
-              </linearGradient>
-              <linearGradient id="gg" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#1a1a1a"/>
-                <stop offset="100%" stop-color="#0e0e0e"/>
-              </linearGradient>
-              <linearGradient id="lg-off" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stop-color="#a81c1c"/>
-                <stop offset="35%" stop-color="#8a1010"/>
-                <stop offset="100%" stop-color="#500808"/>
-              </linearGradient>
-              <linearGradient id="lg-on" x1="0" y1="1" x2="1" y2="0">
-                <stop offset="0%" stop-color="#a81c1c"/>
-                <stop offset="35%" stop-color="#8a1010"/>
-                <stop offset="100%" stop-color="#500808"/>
-              </linearGradient>
-              <filter id="ls" x="-30%" y="-20%" width="160%" height="140%">
-                <feDropShadow dx="2" dy="4" stdDeviation="4" flood-color="#000" flood-opacity=".8"/>
-              </filter>
-            </defs>
-            <!-- outer housing -->
-            <rect x="6" y="4" width="68" height="112" rx="7" fill="url(#hg)" stroke="#080808" stroke-width="2"/>
-            <!-- housing top highlight -->
-            <rect x="6" y="4" width="68" height="8" rx="5" fill="rgba(255,255,255,0.035)"/>
-            <!-- housing bottom shadow -->
-            <rect x="6" y="108" width="68" height="8" rx="5" fill="rgba(0,0,0,0.4)"/>
-            <!-- inner gate channel -->
-            <rect x="15" y="10" width="50" height="100" rx="5" fill="url(#gg)" stroke="#080808" stroke-width="1.5"/>
-            <!-- gate inner shadow top -->
-            <rect x="15" y="10" width="50" height="14" rx="4" fill="rgba(0,0,0,0.5)"/>
-            <!-- gate inner shadow bottom -->
-            <rect x="15" y="96" width="50" height="14" rx="4" fill="rgba(0,0,0,0.3)"/>
-
-            <!-- LEVER — transform controlled by JS -->
-            <g id="lever-group" transform="rotate(20,40,60)">
-              <!-- lever shadow base -->
-              <rect x="22" y="14" width="36" height="84" rx="6" fill="url(#lg-off)" filter="url(#ls)" id="lever-fill"/>
-              <!-- lever main body -->
-              <rect x="22" y="14" width="36" height="84" rx="6" fill="url(#lg-off)" id="lever-body" stroke="#5a0a0a" stroke-width="1"/>
-              <!-- lever top face highlight -->
-              <rect x="24" y="16" width="32" height="26" rx="5" fill="rgba(255,100,100,0.1)" id="lever-top-hi"/>
-              <!-- lever bottom dark -->
-              <rect x="24" y="72" width="32" height="24" rx="5" fill="rgba(0,0,0,0.25)"/>
-              <!-- grip lines -->
-              <line x1="27" y1="55" x2="53" y2="55" stroke="#601010" stroke-width="1.2" opacity=".7"/>
-              <line x1="27" y1="60" x2="53" y2="60" stroke="#601010" stroke-width="1.2" opacity=".7"/>
-              <line x1="27" y1="65" x2="53" y2="65" stroke="#601010" stroke-width="1.2" opacity=".7"/>
-              <!-- center knuckle -->
-              <ellipse cx="40" cy="45" rx="11" ry="7" fill="rgba(160,50,50,0.15)" stroke="#601010" stroke-width=".8"/>
-              <!-- lever edge specular -->
-              <rect x="22" y="14" width="5" height="84" rx="3" fill="rgba(255,255,255,0.04)"/>
-            </g>
-          </svg>
-        </div>
-        <div class="power-icon-row">
-          <svg class="power-icon" id="power-icon" viewBox="0 0 22 22" fill="none">
-            <path d="M11 2v7" stroke="#ff3333" stroke-width="2.2" stroke-linecap="round"/>
-            <path d="M6.5 5.2A8 8 0 1 0 15.5 5.2" stroke="#ff3333" stroke-width="2.2" stroke-linecap="round" fill="none"/>
-          </svg>
-        </div>
-        <span class="toggle-master-label">MASTER POWER</span>
-      </div>
-
-      <!-- BLINK -->
-      <div class="ind-btn" id="btn-blink" onclick="toggleBlink()">
-        <div class="idot" id="dot-blink"></div>
-        <div class="ind-btn-housing"><span class="ind-btn-text">BLINK</span></div>
-        <span class="ind-btn-label">BLINK</span>
-      </div>
+      < <div class="ind-btn" id="btn-strobe" onclick="toggleStrobe()"><div class="idot" id="dot-strobe"></div><div class="ind-btn-housing"><span class="ind-btn-text">STROBE</span></div></div>
+      <div class="ind-btn" id="btn-blink" onclick="toggleBlink()"><div class="idot" id="dot-blink"></div><div class="ind-btn-housing"><span class="ind-btn-text">BLINK</span></div></div>
+      <button class="advance-btn" onclick="switchToAdvanced()">ADVANCED</button>
 
     </div>
     <div class="adv-row">
-      <button class="advance-btn" onclick="switchToAdvanced()">SWITCH TO ADVANCED MODE</button>
-      <div class="status-pill"><div class="sdot"></div><span>COM3 LINKED</span></div>
     </div>
   </div>
 </div>
