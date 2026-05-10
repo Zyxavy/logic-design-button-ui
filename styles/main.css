@@ -94,19 +94,30 @@ body {
 .adv-row { display: flex; gap: 12px; margin-bottom: 12px; }
 .adv-panel { border: 3px solid #959ba1; border-radius: 8px; padding: 10px; background: #d8dde2; flex: 1; min-height: 150px; }
 .adv-panel h2 { font-size: 34px; margin: 0; letter-spacing: 1px; }
-.core-controls-wrap { display: flex; align-items: center; gap: 20px; }
-.color-ring { margin-top: 10px; width: 126px; height: 126px; border-radius: 50%; background: conic-gradient(red, orange, yellow, lime, cyan, blue, magenta, red); border: 14px solid #d8dde2; box-shadow: inset 0 0 0 18px #d8dde2; }
-.rgb-bars { display: flex; gap: 10px; margin-top: 8px; }
-.bar { width: 22px; height: 120px; border: 3px solid #111; border-radius: 4px; background: linear-gradient(#ffffff80 20%, #00000055 90%); position: relative; }
-.bar::after { content: ""; position: absolute; left: 1px; right: 1px; bottom: 42%; height: 16px; border: 2px solid #111; }
-.bar.red::after   { background: #ff8f8f; }
-.bar.green::after { background: #93ff8f; }
-.bar.blue::after  { background: #8fa7ff; }
-.brightness-label { display: block; margin-top: 8px; font-size: 32px; }
+/* ── Color picker ──────────────────────────────────────────── */
+.picker-wrap { display: flex; align-items: center; gap: 10px; margin: 8px 0; }
+.color-wheel { border-radius: 50%; border: 3px solid #111; cursor: crosshair; flex-shrink: 0; }
+.sv-square   { border: 3px solid #111; cursor: crosshair; flex-shrink: 0; }
+
+/* RGB sliders */
+.rgb-sliders { display: flex; flex-direction: column; gap: 4px; margin: 6px 0; }
+.rgb-row { display: flex; align-items: center; gap: 6px; }
+.rgb-lbl { font-size: 22px; font-weight: bold; width: 18px; }
+.r-lbl { color: #c0392b; }
+.g-lbl { color: #27ae60; }
+.b-lbl { color: #2980b9; }
+.rgb-range { flex: 1; height: 10px; cursor: pointer; }
+.r-range { accent-color: #e74c3c; }
+.g-range { accent-color: #2ecc71; }
+.b-range { accent-color: #3498db; }
+.rgb-val  { font-size: 20px; width: 36px; text-align: right; }
+
+.brightness-label { display: block; margin-top: 6px; font-size: 28px; }
 .brightness-slider { width: 100%; accent-color: #8b9096; }
-.digital { margin-top: 18px; font-size: 96px; color: #f9a429; text-shadow: 0 0 4px #d98e1f; letter-spacing: 2px; line-height: 0.9; }
-.display-caption { font-size: 32px; margin: 8px 0 12px; }
-.monitor { border: 4px solid #111; border-radius: 8px; background: #b8c0c9; padding: 10px; font-size: 36px; }
+
+/* Display panel */
+.color-swatch { width: 100%; height: 80px; border: 4px solid #111; border-radius: 8px; background: #FFB000; margin-top: 8px; transition: background 0.15s; }
+.monitor { border: 4px solid #111; border-radius: 8px; background: #b8c0c9; padding: 10px; font-size: 26px; line-height: 1.6; }
 .adv-buttons { flex-wrap: wrap; }
 .adv-btn { min-width: 110px; font-size: 28px; }
 .adv-row.wide .adv-btn { flex: 1; min-width: 140px; }

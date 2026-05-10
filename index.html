@@ -52,24 +52,25 @@
             </div>
             <div class="adv-panel adv-core">
               <h2>CORE CONTROLS</h2>
-              <div class="core-controls-wrap">
-                <div class="color-ring"></div>
-                <div class="rgb-bars" aria-hidden="true">
-                  <div class="bar red"></div>
-                  <div class="bar green"></div>
-                  <div class="bar blue"></div>
-                </div>
+              <div class="picker-wrap">
+                <canvas id="colorWheel" class="color-wheel" width="160" height="160" aria-label="Colour wheel"></canvas>
+                <canvas id="svSquare"   class="sv-square"   width="120" height="120" aria-label="Saturation/brightness picker"></canvas>
+              </div>
+              <div class="rgb-sliders">
+                <label class="rgb-row"><span class="rgb-lbl r-lbl">R</span><input id="sliderR" type="range" min="0" max="255" value="255" class="rgb-range r-range"><span id="valR" class="rgb-val">255</span></label>
+                <label class="rgb-row"><span class="rgb-lbl g-lbl">G</span><input id="sliderG" type="range" min="0" max="255" value="176" class="rgb-range g-range"><span id="valG" class="rgb-val">176</span></label>
+                <label class="rgb-row"><span class="rgb-lbl b-lbl">B</span><input id="sliderB" type="range" min="0" max="255" value="0"   class="rgb-range b-range"><span id="valB" class="rgb-val">000</span></label>
               </div>
               <label for="brightnessSlider" class="brightness-label">BRIGHTNESS</label>
               <input id="brightnessSlider" class="brightness-slider" type="range" min="0" max="100" value="75" step="1" />
             </div>
             <div class="adv-panel adv-display">
               <h2>DISPLAYS</h2>
-              <div id="digitalBrightness" class="digital">075</div>
-              <div class="display-caption">BRIGHTNESS VALUE</div>
-              <div class="monitor">
+              <div id="colorSwatch" class="color-swatch"></div>
+              <div class="monitor" style="margin-top:10px">
                 <div id="hexValue">HEX: #FFB000</div>
                 <div id="levelValue">LEVEL: 75%</div>
+                <div id="rgbValue">RGB: 255,176,000</div>
               </div>
             </div>
           </div>

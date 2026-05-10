@@ -72,40 +72,239 @@ document.getElementById('serialConnectBtn').addEventListener('click', async () =
   }
 });
 
-// ─── Brightness Display ───────────────────────────────────────────────────────
-const brightnessSlider = document.getElementById('brightnessSlider');
-const digitalBrightness = document.getElementById('digitalBrightness');
-const hexValue = document.getElementById('hexValue');
-const levelValue = document.getElementById('levelValue');
+// ─── Color State ──────────────────────────────────────────────────────────────
+// baseR/G/B = chosen color (0-255). Brightness scales them before sending.
+let baseR = 255, baseG = 176, baseB = 0;
+let brightness = 75;   // 0-100
 
-function toHex(channel) {
-  return Math.max(0, Math.min(255, Math.round(channel))).toString(16).toUpperCase().padStart(2, '0');
+// ─── Helpers ─────────────────────────────────────────────────────────────────
+function toHex(n) {
+  return Math.max(0, Math.min(255, Math.round(n))).toString(16).toUpperCase().padStart(2, '0');
 }
 
-function brightnessToHex(level) {
-  const t = level / 100;
-  const r = Math.round(34 + (255 - 34) * t);
-  const g = Math.round(34 + (176 - 34) * t);
-  const b = Math.round(34 + (0   - 34) * t);
-  return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+function pad3(n) { return String(Math.round(n)).padStart(3, '0'); }
+
+function applyBrightness(r, g, b, lvl) {
+  const s = lvl / 100;
+  return [Math.round(r * s), Math.round(g * s), Math.round(b * s)];
 }
 
-function updateBrightnessDisplay(level) {
-  digitalBrightness.textContent = String(level).padStart(3, '0');
-  levelValue.textContent = `LEVEL: ${level}%`;
-  hexValue.textContent = `HEX: ${brightnessToHex(level)}`;
+// ─── Display update ───────────────────────────────────────────────────────────
+const hexValue    = document.getElementById('hexValue');
+const levelValue  = document.getElementById('levelValue');
+const rgbValue    = document.getElementById('rgbValue');
+const colorSwatch = document.getElementById('colorSwatch');
+const valR        = document.getElementById('valR');
+const valG        = document.getElementById('valG');
+const valB        = document.getElementById('valB');
+const sliderR     = document.getElementById('sliderR');
+const sliderG     = document.getElementById('sliderG');
+const sliderB     = document.getElementById('sliderB');
+
+function updateDisplay() {
+  const [r, g, b] = applyBrightness(baseR, baseG, baseB, brightness);
+  const hex = `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+  hexValue.textContent   = `HEX: ${hex}`;
+  levelValue.textContent = `LEVEL: ${brightness}%`;
+  rgbValue.textContent   = `RGB: ${pad3(r)},${pad3(g)},${pad3(b)}`;
+  colorSwatch.style.background = `rgb(${baseR},${baseG},${baseB})`;
 }
 
-let brightnessTimer = null;
-brightnessSlider?.addEventListener('input', (e) => {
-  const level = Number(e.target.value);
-  updateBrightnessDisplay(level);
-  // Debounce serial sends — don't flood port on every tick
-  clearTimeout(brightnessTimer);
-  brightnessTimer = setTimeout(() => {
-    send(`BRIGHTNESS:${level}`);
+// ─── RGB sliders ──────────────────────────────────────────────────────────────
+function syncSlidersToBase() {
+  sliderR.value = baseR; valR.textContent = pad3(baseR);
+  sliderG.value = baseG; valG.textContent = pad3(baseG);
+  sliderB.value = baseB; valB.textContent = pad3(baseB);
+}
+
+let colorTimer = null;
+function scheduleColorSend() {
+  clearTimeout(colorTimer);
+  colorTimer = setTimeout(() => {
+    const [r, g, b] = applyBrightness(baseR, baseG, baseB, brightness);
+    send(`COLOR:${r},${g},${b}`);
   }, 80);
+}
+
+sliderR.addEventListener('input', e => {
+  baseR = Number(e.target.value);
+  valR.textContent = pad3(baseR);
+  updateDisplay(); scheduleColorSend();
 });
+sliderG.addEventListener('input', e => {
+  baseG = Number(e.target.value);
+  valG.textContent = pad3(baseG);
+  updateDisplay(); scheduleColorSend();
+});
+sliderB.addEventListener('input', e => {
+  baseB = Number(e.target.value);
+  valB.textContent = pad3(baseB);
+  updateDisplay(); scheduleColorSend();
+});
+
+// ─── Brightness slider ────────────────────────────────────────────────────────
+const brightnessSlider = document.getElementById('brightnessSlider');
+
+brightnessSlider?.addEventListener('input', e => {
+  brightness = Number(e.target.value);
+  updateDisplay();
+  scheduleColorSend();
+});
+
+// ─── HSV ↔ RGB helpers ────────────────────────────────────────────────────────
+function hsvToRgb(h, s, v) {
+  // h 0-360, s 0-1, v 0-1  →  r,g,b 0-255
+  const c = v * s, x = c * (1 - Math.abs((h / 60) % 2 - 1)), m = v - c;
+  let r, g, b;
+  if      (h < 60)  { r=c; g=x; b=0; }
+  else if (h < 120) { r=x; g=c; b=0; }
+  else if (h < 180) { r=0; g=c; b=x; }
+  else if (h < 240) { r=0; g=x; b=c; }
+  else if (h < 300) { r=x; g=0; b=c; }
+  else              { r=c; g=0; b=x; }
+  return [Math.round((r+m)*255), Math.round((g+m)*255), Math.round((b+m)*255)];
+}
+
+function rgbToHsv(r, g, b) {
+  r/=255; g/=255; b/=255;
+  const max=Math.max(r,g,b), min=Math.min(r,g,b), d=max-min;
+  let h=0, s=max===0?0:d/max, v=max;
+  if (d!==0) {
+    if      (max===r) h = ((g-b)/d + (g<b?6:0)) / 6;
+    else if (max===g) h = ((b-r)/d + 2) / 6;
+    else              h = ((r-g)/d + 4) / 6;
+  }
+  return [h*360, s, v];
+}
+
+// ─── Color Wheel canvas ───────────────────────────────────────────────────────
+const wheelCanvas = document.getElementById('colorWheel');
+const wheelCtx    = wheelCanvas.getContext('2d');
+const W = wheelCanvas.width, H = wheelCanvas.height;
+const WR = W / 2 - 4;   // radius
+
+let currentHue = 28;    // amber start
+let currentSat = 1.0;
+let currentVal = 1.0;
+
+function drawWheel() {
+  const img = wheelCtx.createImageData(W, H);
+  const cx = W/2, cy = H/2;
+  for (let y=0; y<H; y++) {
+    for (let x=0; x<W; x++) {
+      const dx = x-cx, dy = y-cy, dist = Math.sqrt(dx*dx+dy*dy);
+      if (dist > WR) continue;
+      const hue = ((Math.atan2(dy, dx) * 180/Math.PI) + 360) % 360;
+      const sat = dist / WR;
+      const [r,g,b] = hsvToRgb(hue, sat, 1);
+      const i = (y*W+x)*4;
+      img.data[i]=r; img.data[i+1]=g; img.data[i+2]=b; img.data[i+3]=255;
+    }
+  }
+  wheelCtx.putImageData(img, 0, 0);
+}
+
+function drawWheelCursor() {
+  drawWheel();
+  const cx=W/2, cy=H/2;
+  const rad = currentSat * WR;
+  const ang = currentHue * Math.PI/180;
+  const px = cx + rad*Math.cos(ang), py = cy + rad*Math.sin(ang);
+  wheelCtx.beginPath();
+  wheelCtx.arc(px, py, 7, 0, Math.PI*2);
+  wheelCtx.strokeStyle='#fff'; wheelCtx.lineWidth=2.5; wheelCtx.stroke();
+  wheelCtx.beginPath();
+  wheelCtx.arc(px, py, 7, 0, Math.PI*2);
+  wheelCtx.strokeStyle='#000'; wheelCtx.lineWidth=1; wheelCtx.stroke();
+}
+
+// ─── SV Square canvas ─────────────────────────────────────────────────────────
+const svCanvas = document.getElementById('svSquare');
+const svCtx    = svCanvas.getContext('2d');
+const SW = svCanvas.width, SH = svCanvas.height;
+
+function drawSVSquare() {
+  // Horizontal: saturation 0→1; Vertical: value 1→0
+  const base = svCtx.createLinearGradient(0,0,SW,0);
+  base.addColorStop(0, '#fff');
+  base.addColorStop(1, `hsl(${currentHue},100%,50%)`);
+  svCtx.fillStyle = base;
+  svCtx.fillRect(0,0,SW,SH);
+  const dark = svCtx.createLinearGradient(0,0,0,SH);
+  dark.addColorStop(0,'transparent');
+  dark.addColorStop(1,'#000');
+  svCtx.fillStyle = dark;
+  svCtx.fillRect(0,0,SW,SH);
+}
+
+function drawSVCursor() {
+  drawSVSquare();
+  const px = currentSat * SW, py = (1-currentVal) * SH;
+  svCtx.beginPath(); svCtx.arc(px,py,7,0,Math.PI*2);
+  svCtx.strokeStyle='#fff'; svCtx.lineWidth=2.5; svCtx.stroke();
+  svCtx.beginPath(); svCtx.arc(px,py,7,0,Math.PI*2);
+  svCtx.strokeStyle='#000'; svCtx.lineWidth=1; svCtx.stroke();
+}
+
+function refreshPicker() {
+  drawWheelCursor();
+  drawSVCursor();
+}
+
+function pickerToBase() {
+  const [r,g,b] = hsvToRgb(currentHue, currentSat, currentVal);
+  baseR=r; baseG=g; baseB=b;
+  syncSlidersToBase();
+  updateDisplay();
+  scheduleColorSend();
+}
+
+// Wheel pointer events
+function wheelPointer(e) {
+  const rect = wheelCanvas.getBoundingClientRect();
+  const cx=W/2, cy=H/2;
+  const x=(e.clientX-rect.left)*(W/rect.width)-cx;
+  const y=(e.clientY-rect.top)*(H/rect.height)-cy;
+  const dist=Math.sqrt(x*x+y*y);
+  if (dist>WR) return;
+  currentHue=((Math.atan2(y,x)*180/Math.PI)+360)%360;
+  currentSat=Math.min(dist/WR,1);
+  refreshPicker(); pickerToBase();
+}
+let wheelDragging=false;
+wheelCanvas.addEventListener('mousedown', e=>{wheelDragging=true; wheelPointer(e);});
+window.addEventListener('mousemove',      e=>{if(wheelDragging) wheelPointer(e);});
+window.addEventListener('mouseup',        ()=>wheelDragging=false);
+wheelCanvas.addEventListener('touchstart', e=>{e.preventDefault(); wheelPointer(e.touches[0]);},{passive:false});
+wheelCanvas.addEventListener('touchmove',  e=>{e.preventDefault(); wheelPointer(e.touches[0]);},{passive:false});
+
+// SV square pointer events
+function svPointer(e) {
+  const rect=svCanvas.getBoundingClientRect();
+  const x=Math.max(0,Math.min((e.clientX-rect.left)*(SW/rect.width),SW));
+  const y=Math.max(0,Math.min((e.clientY-rect.top)*(SH/rect.height),SH));
+  currentSat=x/SW; currentVal=1-y/SH;
+  refreshPicker(); pickerToBase();
+}
+let svDragging=false;
+svCanvas.addEventListener('mousedown', e=>{svDragging=true; svPointer(e);});
+window.addEventListener('mousemove',   e=>{if(svDragging) svPointer(e);});
+window.addEventListener('mouseup',     ()=>svDragging=false);
+svCanvas.addEventListener('touchstart',e=>{e.preventDefault(); svPointer(e.touches[0]);},{passive:false});
+svCanvas.addEventListener('touchmove', e=>{e.preventDefault(); svPointer(e.touches[0]);},{passive:false});
+
+// Sync RGB sliders → picker HSV so wheel/SV stay in sync
+function baseToHSV() {
+  const [h,s,v]=rgbToHsv(baseR,baseG,baseB);
+  currentHue=h; currentSat=s; currentVal=v;
+}
+
+// Override slider handlers to also sync picker visuals
+sliderR.addEventListener('input', ()=>{ baseToHSV(); refreshPicker(); });
+sliderG.addEventListener('input', ()=>{ baseToHSV(); refreshPicker(); });
+sliderB.addEventListener('input', ()=>{ baseToHSV(); refreshPicker(); });
+
+
 
 // ─── Clock ───────────────────────────────────────────────────────────────────
 const clock = document.getElementById('clock');
@@ -123,7 +322,7 @@ const toggle = document.getElementById('powerToggle');
 const sun = document.getElementById('sun');
 const moon = document.getElementById('moon');
 
-const PATH = { cx: 54, cy: 70, rx: 55, ry: 85 };
+const PATH = { cx: 54, cy: 60, rx: 57, ry: 85 };
 let isOn = true;
 let animationFrame = null;
 
@@ -148,7 +347,7 @@ function renderFromProgress(sunProgress) {
 
 function animateCycle(targetOn) {
   if (animationFrame) cancelAnimationFrame(animationFrame);
-  const duration = 950;
+  const duration = 800;
   const start = performance.now();
   const from = targetOn ? 1 : 0;
   const to   = targetOn ? 0 : 1;
@@ -236,7 +435,15 @@ document.querySelectorAll('.mode-btn[disabled]').forEach(btn => {
 
 // ─── Init ─────────────────────────────────────────────────────────────────────
 renderFromProgress(0);
-updateBrightnessDisplay(Number(brightnessSlider?.value ?? 75));
+syncSlidersToBase();
+updateDisplay();
+// Draw picker after layout (canvases need to be visible)
+requestAnimationFrame(() => {
+  // set initial HSV from amber base
+  const [h,s,v] = rgbToHsv(baseR, baseG, baseB);
+  currentHue=h; currentSat=s; currentVal=v;
+  refreshPicker();
+});
 setSerialStatus(false);
 
 // Warn if browser lacks Web Serial
