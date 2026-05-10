@@ -7,10 +7,10 @@ let isOn = true;
 let animationFrame = null;
 
 const PATH = {
-  cx: 50,
-  cy: 84,
-  rx: 22,
-  ry: 72,
+  cx: 54,
+  cy: 70,
+  rx: 55,
+  ry: 740,
 };
 
 function updateTime() {
@@ -46,7 +46,7 @@ function renderFromProgress(sunProgress) {
 function animateCycle(targetOn) {
   if (animationFrame) cancelAnimationFrame(animationFrame);
 
-  const duration = 1300;
+  const duration = 800;
   const start = performance.now();
   const from = targetOn ? 1 : 0;
   const to = targetOn ? 0 : 1;
