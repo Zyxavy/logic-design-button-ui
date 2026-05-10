@@ -44,16 +44,28 @@
             </div>
             <div class="adv-panel adv-core">
               <h2>CORE CONTROLS</h2>
-              <div class="color-ring"></div>
+              <div class="core-controls-wrap">
+                <div class="color-ring"></div>
+                <div class="rgb-bars" aria-hidden="true">
+                  <div class="bar red"></div>
+                  <div class="bar green"></div>
+                  <div class="bar blue"></div>
+                </div>
+              </div>
+              <label for="brightnessSlider" class="brightness-label">BRIGHTNESS</label>
+              <input id="brightnessSlider" class="brightness-slider" type="range" min="0" max="100" value="75" step="1" />
             </div>
             <div class="adv-panel adv-display">
               <h2>DISPLAYS</h2>
-              <div class="digital">075</div>
+              <div id="digitalBrightness" class="digital">075</div>
+              <div class="display-caption">BRIGHTNESS VALUE</div>
+              <div class="monitor">
+                <div id="hexValue">HEX: #FFB000</div>
+                <div id="levelValue">LEVEL: 75%</div>
+              </div>
             </div>
           </div>
           <div class="adv-row adv-buttons">
-            <button class="adv-btn" type="button">SAVE</button>
-            <button class="adv-btn" type="button">LOAD</button>
             <button class="adv-btn" type="button">STROBE</button>
             <button class="adv-btn" type="button">FADE</button>
             <button class="adv-btn" type="button">RAINBOW</button>
@@ -62,9 +74,6 @@
           <div class="adv-row adv-buttons wide">
             <button class="adv-btn" type="button">CANDLE</button>
             <button class="adv-btn" type="button">SUNRISE</button>
-            <button class="adv-btn" type="button">MUSIC REACTIVE</button>
-            <button class="adv-btn" type="button">CALFTON</button>
-            <button class="adv-btn" type="button">TEMPERATURE MAP</button>
           </div>
           <div class="back-wrap">
             <button id="backToSimpleBtn" class="back-btn" type="button">BACK TO SIMPLE MODE</button>

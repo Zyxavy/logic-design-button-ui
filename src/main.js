@@ -3,6 +3,10 @@ const simpleView = document.getElementById('simpleView');
 const advancedView = document.getElementById('advancedView');
 const advancedBtn = document.getElementById('advancedBtn');
 const backToSimpleBtn = document.getElementById('backToSimpleBtn');
+const brightnessSlider = document.getElementById('brightnessSlider');
+const digitalBrightness = document.getElementById('digitalBrightness');
+const hexValue = document.getElementById('hexValue');
+const levelValue = document.getElementById('levelValue');
 
 
 const clock = document.getElementById('clock');
@@ -30,6 +34,32 @@ function setMode(mode) {
 
 advancedBtn.addEventListener('click', () => setMode('advanced'));
 backToSimpleBtn.addEventListener('click', () => setMode('simple'));
+
+function toHex(channel) {
+  return Math.max(0, Math.min(255, Math.round(channel))).toString(16).toUpperCase().padStart(2, '0');
+}
+
+function brightnessToHex(level) {
+  const minBase = { r: 34, g: 34, b: 34 };
+  const maxBase = { r: 255, g: 176, b: 0 };
+  const t = level / 100;
+  const r = minBase.r + (maxBase.r - minBase.r) * t;
+  const g = minBase.g + (maxBase.g - minBase.g) * t;
+  const b = minBase.b + (maxBase.b - minBase.b) * t;
+  return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+}
+
+function updateBrightnessDisplay(level) {
+  const value = String(level).padStart(3, '0');
+  digitalBrightness.textContent = value;
+  levelValue.textContent = `LEVEL: ${level}%`;
+  hexValue.textContent = `HEX: ${brightnessToHex(level)}`;
+}
+
+brightnessSlider?.addEventListener('input', (event) => {
+  updateBrightnessDisplay(Number(event.target.value));
+});
+
 
 function updateTime() {
   const now = new Date();
@@ -97,3 +127,4 @@ toggle.addEventListener('click', () => {
 updateTime();
 setInterval(updateTime, 1000);
 renderFromProgress(0);
+updateBrightnessDisplay(Number(brightnessSlider?.value ?? 75));
