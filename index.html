@@ -31,7 +31,7 @@
     </div>
     <div class="simple-controls">
 
-      < <div class="ind-btn" id="btn-strobe" onclick="toggleStrobe()"><div class="idot" id="dot-strobe"></div><div class="ind-btn-housing"><span class="ind-btn-text">STROBE</span></div></div>
+      <div class="ind-btn" id="btn-strobe" onclick="toggleStrobe()"><div class="idot" id="dot-strobe"></div><div class="ind-btn-housing"><span class="ind-btn-text">STROBE</span></div></div>
       <div class="ind-btn" id="btn-blink" onclick="toggleBlink()"><div class="idot" id="dot-blink"></div><div class="ind-btn-housing"><span class="ind-btn-text">BLINK</span></div></div>
       <button class="advance-btn" onclick="switchToAdvanced()">ADVANCED</button>
 
@@ -46,7 +46,7 @@
   <div class="screw s-tl"></div><div class="screw s-tr"></div>
   <div class="screw s-bl"></div><div class="screw s-br"></div>
   <div class="panel-header">
-    <button class="back-btn" onclick="switchToSimple()">←</button>
+    <button class="back-btn adv-back-btn" onclick="switchToSimple()">BACK TO SIMPLE</button>
     <span class="panel-title">Industrial LED Master Control Panel</span>
   </div>
   <div class="adv-body">
@@ -109,8 +109,6 @@
       <div class="inset">
         <div class="slabel">Presets &amp; Patterns</div>
         <div class="preset-grid">
-          <button class="pbtn" onclick="pressBtnFx(this)">SAVE</button>
-          <button class="pbtn" onclick="pressBtnFx(this)">LOAD</button>
           <button class="pbtn" onclick="pressBtnFx(this);setMode('strobe',this)">STROBE</button>
           <button class="pbtn" onclick="pressBtnFx(this);setMode('fade',this)">FADE</button>
           <button class="pbtn" onclick="pressBtnFx(this);setMode('rainbow',this)">RAINBOW</button>
@@ -128,8 +126,6 @@
         <div class="fancy-btns">
           <button class="fbtn" onclick="setMode('candle',this)">CANDLE</button>
           <button class="fbtn" onclick="setMode('sunrise',this)">SUNRISE</button>
-          <button class="fbtn" onclick="setMode('music',this)">MUSIC REACTIVE</button>
-          <button class="fbtn" onclick="setMode('temp',this)">TEMPERATURE MAP</button>
         </div>
       </div>
     </div>
