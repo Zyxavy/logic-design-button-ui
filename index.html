@@ -7,8 +7,9 @@
     <link rel="stylesheet" href="styles/main.css" />
   </head>
   <body>
-    <main class="ui">
-      <section class="time-pill" aria-live="polite">TIME: <span id="clock">--:-- --</span></section>
+   <main class="ui" id="appRoot" data-mode="simple">
+      <section class="simple-view" id="simpleView">
+        <section class="time-pill" aria-live="polite">TIME: <span id="clock">--:-- --</span></section>
 
       <section class="scene" aria-label="Sun and moon cycle display">
         <div class="orbit orbit-left"></div>
@@ -22,15 +23,53 @@
         </button>
 
         <div class="labels" aria-hidden="true">
-          <span>ON</span>
-          <span>OFF</span>
-        </div>
+            <span>ON</span>
+            <span>OFF</span>
+          </div>
+        </section>
+
+        <section class="modes" aria-label="Mode buttons placeholders">
+          <button type="button" class="mode-btn" disabled>STROBE</button>
+          <button type="button" class="mode-btn" disabled>BLINK</button>
+          <button id="advancedBtn" type="button" class="mode-btn">ADVANCED</button>
+        </section>
       </section>
 
-      <section class="modes" aria-label="Mode buttons placeholders">
-        <button type="button" class="mode-btn" disabled>STROBE</button>
-        <button type="button" class="mode-btn" disabled>BLINK</button>
-        <button type="button" class="mode-btn" disabled>ADVANCED</button>
+       <section class="advanced-view" id="advancedView" aria-label="Advanced controls" hidden>
+        <div class="advanced-card">
+          <div class="adv-row">
+            <div class="adv-panel adv-power">
+              <h2>MASTER POWER</h2>
+              <button class="toggle small" type="button" aria-pressed="true"><span class="knob"></span></button>
+            </div>
+            <div class="adv-panel adv-core">
+              <h2>CORE CONTROLS</h2>
+              <div class="color-ring"></div>
+            </div>
+            <div class="adv-panel adv-display">
+              <h2>DISPLAYS</h2>
+              <div class="digital">075</div>
+            </div>
+          </div>
+          <div class="adv-row adv-buttons">
+            <button class="adv-btn" type="button">SAVE</button>
+            <button class="adv-btn" type="button">LOAD</button>
+            <button class="adv-btn" type="button">STROBE</button>
+            <button class="adv-btn" type="button">FADE</button>
+            <button class="adv-btn" type="button">RAINBOW</button>
+            <button class="adv-btn" type="button">POLICE</button>
+          </div>
+          <div class="adv-row adv-buttons wide">
+            <button class="adv-btn" type="button">CANDLE</button>
+            <button class="adv-btn" type="button">SUNRISE</button>
+            <button class="adv-btn" type="button">MUSIC REACTIVE</button>
+            <button class="adv-btn" type="button">CALFTON</button>
+            <button class="adv-btn" type="button">TEMPERATURE MAP</button>
+          </div>
+          <div class="back-wrap">
+            <button id="backToSimpleBtn" class="back-btn" type="button">BACK TO SIMPLE MODE</button>
+          </div>
+        </div>
       </section>
     </main>
 

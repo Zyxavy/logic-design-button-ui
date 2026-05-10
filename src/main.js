@@ -1,3 +1,10 @@
+const appRoot = document.getElementById('appRoot');
+const simpleView = document.getElementById('simpleView');
+const advancedView = document.getElementById('advancedView');
+const advancedBtn = document.getElementById('advancedBtn');
+const backToSimpleBtn = document.getElementById('backToSimpleBtn');
+
+
 const clock = document.getElementById('clock');
 const toggle = document.getElementById('powerToggle');
 const sun = document.getElementById('sun');
@@ -12,6 +19,17 @@ const PATH = {
   rx: 55,
   ry: 740,
 };
+
+function setMode(mode) {
+  const advanced = mode === 'advanced';
+  appRoot.dataset.mode = mode;
+  simpleView.hidden = advanced;
+  advancedView.hidden = !advanced;
+  document.title = advanced ? 'LED UI - Advanced Mode' : 'LED UI - Simple Mode';
+}
+
+advancedBtn.addEventListener('click', () => setMode('advanced'));
+backToSimpleBtn.addEventListener('click', () => setMode('simple'));
 
 function updateTime() {
   const now = new Date();
