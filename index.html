@@ -8,34 +8,42 @@
   </head>
   <body>
    <main class="ui" id="appRoot" data-mode="simple">
+
+      <!-- ── Serial Bar ─────────────────────────────────────────── -->
+      <div class="serial-bar">
+        <span class="serial-dot disconnected" id="serialDot"></span>
+        <span class="serial-label">ARDUINO</span>
+        <button id="serialConnectBtn" class="serial-btn" type="button">CONNECT</button>
+      </div>
+
       <section class="simple-view" id="simpleView">
         <section class="time-pill" aria-live="polite">TIME: <span id="clock">--:-- --</span></section>
 
-      <section class="scene" aria-label="Sun and moon cycle display">
-        <div class="orbit orbit-left"></div>
-        <div class="orbit orbit-right"></div>
+        <section class="scene" aria-label="Sun and moon cycle display">
+          <div class="orbit orbit-left"></div>
+          <div class="orbit orbit-right"></div>
 
-        <div id="sun" class="celestial sun" aria-hidden="true">☀</div>
-        <div id="moon" class="celestial moon" aria-hidden="true">☾</div>
+          <div id="sun" class="celestial sun" aria-hidden="true">☀</div>
+          <div id="moon" class="celestial moon" aria-hidden="true">☾</div>
 
-        <button id="powerToggle" class="toggle" type="button" aria-pressed="true">
-          <span class="knob"></span>
-        </button>
+          <button id="powerToggle" class="toggle" type="button" aria-pressed="true">
+            <span class="knob"></span>
+          </button>
 
-        <div class="labels" aria-hidden="true">
+          <div class="labels" aria-hidden="true">
             <span>ON</span>
             <span>OFF</span>
           </div>
         </section>
 
-        <section class="modes" aria-label="Mode buttons placeholders">
-          <button type="button" class="mode-btn" disabled>STROBE</button>
-          <button type="button" class="mode-btn" disabled>BLINK</button>
+        <section class="modes" aria-label="Mode buttons">
+          <button type="button" class="mode-btn">STROBE</button>
+          <button type="button" class="mode-btn">BLINK</button>
           <button id="advancedBtn" type="button" class="mode-btn">ADVANCED</button>
         </section>
       </section>
 
-       <section class="advanced-view" id="advancedView" aria-label="Advanced controls" hidden>
+      <section class="advanced-view" id="advancedView" aria-label="Advanced controls" hidden>
         <div class="advanced-card">
           <div class="adv-row">
             <div class="adv-panel adv-power">
