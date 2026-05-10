@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LED UI - Simple Mode</title>
+    <link rel="stylesheet" href="styles/main.css" />
+  </head>
+  <body>
+    <main class="ui">
+      <section class="time-pill" aria-live="polite">TIME: <span id="clock">--:-- --</span></section>
+
+      <section class="scene" aria-label="Sun and moon cycle display">
+        <div class="orbit orbit-left"></div>
+        <div class="orbit orbit-right"></div>
+
+        <div id="sun" class="celestial sun" aria-hidden="true">☀</div>
+        <div id="moon" class="celestial moon" aria-hidden="true">☾</div>
+
+        <button id="powerToggle" class="toggle" type="button" aria-pressed="true">
+          <span class="knob"></span>
+        </button>
+
+        <div class="labels" aria-hidden="true">
+          <span>ON</span>
+          <span>OFF</span>
+        </div>
+      </section>
+
+      <section class="modes" aria-label="Mode buttons placeholders">
+        <button type="button" class="mode-btn" disabled>STROBE</button>
+        <button type="button" class="mode-btn" disabled>BLINK</button>
+        <button type="button" class="mode-btn" disabled>ADVANCED</button>
+      </section>
+    </main>
+
+    <script src="src/main.js"></script>
+  </body>
+</html>
