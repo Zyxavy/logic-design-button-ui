@@ -16,11 +16,7 @@ function setAdvRocker(on){
 function togglePower(){
   isPowered=!isPowered;
   setRocker(isPowered);
-  const onLbl=document.getElementById('t-on-lbl'); if(onLbl) onLbl.classList.toggle('vis',isPowered);
-  const picon=document.getElementById('power-icon'); if(picon) picon.classList.toggle('lit',isPowered);
 
-  const seg=document.getElementById('seg-display');
-  if(seg){ seg.textContent=isPowered?'ON':'OFF'; seg.classList.toggle('off-state',!isPowered); }
   if(!isPowered){
     if(isStrobe){isStrobe=false;stopStrobeAnim();updBtn('btn-strobe','dot-strobe',false)}
     if(isBlink){isBlink=false;stopBlinkAnim();updBtn('btn-blink','dot-blink',false)}
@@ -94,11 +90,6 @@ function switchToSimple(){
     s.classList.add('mbi');
     isPowered=advPowered;
     setRocker(isPowered);
-    const onLbl=document.getElementById('t-on-lbl'); if(onLbl) onLbl.classList.toggle('vis',isPowered);
-    const picon=document.getElementById('power-icon'); if(picon) picon.classList.toggle('lit',isPowered);
-
-    const seg=document.getElementById('seg-display');
-    if(seg){ seg.textContent=isPowered?'ON':'OFF'; seg.classList.toggle('off-state',!isPowered); }
     setTimeout(()=>s.classList.remove('mbi'),440);
   },430);
 }
@@ -173,3 +164,8 @@ function stopDrag(){drag=null;document.removeEventListener('mousemove',onDrag);d
 
 drawWheel();updateLCD();
 setRocker(false);setAdvRocker(false);
+
+['startStrobeAnim','stopStrobeAnim','startBlinkAnim','stopBlinkAnim'].forEach(fn=>{
+  const old=window[fn];
+  window[fn]=()=>{const seg=document.getElementById('seg-display');if(!seg)return;old();};
+});
