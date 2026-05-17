@@ -288,7 +288,7 @@ setInterval(updateTime, 1000);
 const toggle = document.getElementById('powerToggle');
 const sun = document.getElementById('sun');
 const moon = document.getElementById('moon');
-const PATH = { cx: 54, cy: 60, rx: 57, ry: 85 };
+const PATH = { cx: 54, cy: 60, rx: 87, ry: 85 };
 let isOn = true, animationFrame = null;
 
 function pointOnArc(progress) {
