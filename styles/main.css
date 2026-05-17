@@ -24,22 +24,24 @@ body {
   overflow-x: hidden;
 }
 
-/*  PCB background SVG */
-.pcb-bg {
+/* PCB background SVG */
+.bg {
   position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  pointer-events: none;
+  top: 0;
+  left: 0;
+  width: 100vw; 
+  height: 100vh; 
+  z-index: -1;          
+  pointer-events: none; 
+  display: block;
 }
 
 /*  Main UI sits above PCB  */
 .ui {
   position: relative;
   z-index: 1;
-  width: min(780px, 95vw);
-  min-height: 400px;
+  min-height: 100vh;
+  box-sizing: border-box;
 }
 
 /* Serial bar also needs z-index */
