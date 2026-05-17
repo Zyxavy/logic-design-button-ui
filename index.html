@@ -7,9 +7,124 @@
     <link rel="stylesheet" href="styles/main.css" />
   </head>
   <body>
+
+    <!-- PCB background SVG (inlined so it scales with viewport) -->
+    <svg class="pcb-bg" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+      <defs>
+        <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+          <circle cx="10" cy="10" r="0.75" fill="#a8b4be" opacity="0.45"/>
+        </pattern>
+      </defs>
+      <!-- dot grid -->
+      <rect width="100%" height="100%" fill="url(#grid)"/>
+
+      <!-- TOP-LEFT traces -->
+      <g stroke="#b0bcc6" stroke-width="1.1" fill="none" opacity="0.65">
+        <polyline points="0,38 62,38 62,8 185,8"/>
+        <polyline points="0,58 42,58 42,28 225,28"/>
+        <polyline points="0,78 82,78 82,48 165,48 165,18 305,18"/>
+        <polyline points="0,98 32,98 32,68 105,68 105,44"/>
+        <line x1="62"  y1="0" x2="62"  y2="8"/>
+        <line x1="105" y1="0" x2="105" y2="28"/>
+        <line x1="185" y1="0" x2="185" y2="8"/>
+        <!-- pads -->
+        <rect x="59"  y="35"  width="6" height="6" rx="1" stroke="#9eaab4" stroke-width="0.8" fill="none"/>
+        <rect x="39"  y="55"  width="6" height="6" rx="1" stroke="#9eaab4" stroke-width="0.8" fill="none"/>
+        <rect x="79"  y="75"  width="6" height="6" rx="1" stroke="#9eaab4" stroke-width="0.8" fill="none"/>
+        <!-- IC chip -->
+        <rect x="0" y="108" width="136" height="64" rx="2" stroke="#9eb0bc" stroke-width="1.1" fill="none"/>
+        <line x1="11" y1="108" x2="11" y2="172"/>
+        <line x1="22" y1="108" x2="22" y2="172"/>
+        <line x1="33" y1="108" x2="33" y2="172"/>
+        <line x1="44" y1="108" x2="44" y2="172"/>
+        <line x1="55" y1="108" x2="55" y2="172"/>
+        <text x="4" y="144" font-size="7" fill="#96a4ae" font-family="monospace" opacity="0.9">U1</text>
+        <!-- small resistors/caps -->
+        <rect x="42"  y="178" width="32" height="12" rx="1.5" stroke="#9eb0bc" stroke-width="0.9" fill="none"/>
+        <text x="47"  y="187" font-size="6" fill="#96a4ae" font-family="monospace">R1</text>
+        <rect x="82"  y="178" width="32" height="12" rx="1.5" stroke="#9eb0bc" stroke-width="0.9" fill="none"/>
+        <text x="87"  y="187" font-size="6" fill="#96a4ae" font-family="monospace">C1</text>
+        <line x1="42" y1="184" x2="32" y2="184"/>
+        <line x1="82" y1="184" x2="74" y2="184"/>
+      </g>
+
+      <!-- TOP-RIGHT traces (mirrored) -->
+      <g stroke="#b0bcc6" stroke-width="1.1" fill="none" opacity="0.65" transform="translate(100%,0) scale(-1,1)">
+        <polyline points="0,28 82,28 82,8 205,8"/>
+        <polyline points="0,48 62,48 62,18 245,18"/>
+        <polyline points="0,68 42,68 42,38 185,38"/>
+        <polyline points="0,88 102,88 102,58 162,58"/>
+        <rect x="59" y="25" width="6" height="6" rx="1" stroke="#9eaab4" stroke-width="0.8" fill="none"/>
+        <rect x="39" y="45" width="6" height="6" rx="1" stroke="#9eaab4" stroke-width="0.8" fill="none"/>
+        <!-- Gauge panel -->
+        <rect x="0" y="98" width="125" height="88" rx="2" stroke="#9eb0bc" stroke-width="1.1" fill="none"/>
+        <text x="4" y="107" font-size="5.5" fill="#96a4ae" font-family="monospace">SYS MONITOR</text>
+        <circle cx="28" cy="134" r="16" stroke="#9eb0bc" stroke-width="1" fill="none"/>
+        <circle cx="28" cy="134" r="9"  stroke="#9eb0bc" stroke-width="0.7" fill="none"/>
+        <line x1="28" y1="134" x2="28" y2="120" stroke="#9eb0bc" stroke-width="1"/>
+        <circle cx="74" cy="134" r="16" stroke="#9eb0bc" stroke-width="1" fill="none"/>
+        <circle cx="74" cy="134" r="9"  stroke="#9eb0bc" stroke-width="0.7" fill="none"/>
+        <line x1="74" y1="134" x2="84" y2="126" stroke="#9eb0bc" stroke-width="1"/>
+        <text x="4"  y="128" font-size="5" fill="#96a4ae" font-family="monospace">3.3V</text>
+        <text x="50" y="128" font-size="5" fill="#96a4ae" font-family="monospace">5.0V</text>
+        <rect x="4" y="155" width="116" height="24" rx="1" stroke="#9eb0bc" stroke-width="0.8" fill="none"/>
+        <polyline points="6,174 19,162 32,169 45,158 58,166 72,155 85,163 98,159 112,165" stroke="#9eb0bc" stroke-width="0.9" fill="none"/>
+      </g>
+
+      <!-- BOTTOM-LEFT traces (flipped) -->
+      <g stroke="#b0bcc6" stroke-width="1.1" fill="none" opacity="0.65" transform="translate(0,100%) scale(1,-1)">
+        <polyline points="0,38 62,38 62,8 185,8"/>
+        <polyline points="0,58 42,58 42,28 145,28"/>
+        <rect x="59" y="35" width="6" height="6" rx="1" stroke="#9eaab4" stroke-width="0.8" fill="none"/>
+        <!-- Connector block -->
+        <rect x="0" y="68" width="22" height="46" rx="2" stroke="#9eb0bc" stroke-width="1.1" fill="none"/>
+        <line x1="6"  y1="76"  x2="16" y2="76"  stroke="#9eb0bc" stroke-width="0.8"/>
+        <line x1="6"  y1="83"  x2="16" y2="83"  stroke="#9eb0bc" stroke-width="0.8"/>
+        <line x1="6"  y1="90"  x2="16" y2="90"  stroke="#9eb0bc" stroke-width="0.8"/>
+        <line x1="6"  y1="97"  x2="16" y2="97"  stroke="#9eb0bc" stroke-width="0.8"/>
+        <line x1="6"  y1="104" x2="16" y2="104" stroke="#9eb0bc" stroke-width="0.8"/>
+        <!-- Data panel -->
+        <rect x="30" y="58" width="106" height="58" rx="2" stroke="#9eb0bc" stroke-width="1.1" fill="none"/>
+        <text x="35" y="68"  font-size="5.5" fill="#96a4ae" font-family="monospace">0 0 1 0  0 1 1 0</text>
+        <text x="35" y="77"  font-size="5.5" fill="#96a4ae" font-family="monospace">R: 0.0  A: 0.0</text>
+        <text x="35" y="86"  font-size="5.5" fill="#96a4ae" font-family="monospace">0 1 0 0  0 0 1 1</text>
+        <rect x="35" y="92"  width="7"  height="12" rx="0.5" stroke="#9eb0bc" stroke-width="0.7" fill="none"/>
+        <rect x="45" y="97"  width="7"  height="7"  rx="0.5" stroke="#9eb0bc" stroke-width="0.7" fill="none"/>
+        <rect x="55" y="90"  width="7"  height="14" rx="0.5" stroke="#9eb0bc" stroke-width="0.7" fill="none"/>
+        <rect x="65" y="95"  width="7"  height="9"  rx="0.5" stroke="#9eb0bc" stroke-width="0.7" fill="none"/>
+        <rect x="75" y="93"  width="7"  height="11" rx="0.5" stroke="#9eb0bc" stroke-width="0.7" fill="none"/>
+        <text x="35" y="115" font-size="5.5" fill="#96a4ae" font-family="monospace">// REV 2.0</text>
+      </g>
+
+      <!-- BOTTOM-RIGHT traces (flipped+mirrored) -->
+      <g stroke="#b0bcc6" stroke-width="1.1" fill="none" opacity="0.65" transform="translate(100%,100%) scale(-1,-1)">
+        <polyline points="0,38 62,38 62,8 205,8"/>
+        <polyline points="0,58 42,58 42,28 162,28"/>
+        <rect x="59" y="35" width="6" height="6" rx="1" stroke="#9eaab4" stroke-width="0.8" fill="none"/>
+        <!-- Round chip -->
+        <circle cx="20" cy="88" r="18" stroke="#9eb0bc" stroke-width="1.2" fill="none"/>
+        <circle cx="20" cy="88" r="10" stroke="#9eb0bc" stroke-width="0.8" fill="none"/>
+        <line x1="2"  y1="88" x2="10" y2="88" stroke="#9eb0bc" stroke-width="0.8"/>
+        <line x1="30" y1="88" x2="38" y2="88" stroke="#9eb0bc" stroke-width="0.8"/>
+        <line x1="20" y1="70" x2="20" y2="78" stroke="#9eb0bc" stroke-width="0.8"/>
+        <line x1="20" y1="98" x2="20" y2="106" stroke="#9eb0bc" stroke-width="0.8"/>
+        <text x="14" y="91" font-size="5.5" fill="#96a4ae" font-family="monospace">IC</text>
+      </g>
+
+      <!-- Center side stubs -->
+      <g stroke="#b0bcc6" stroke-width="1" fill="none" opacity="0.38">
+        <polyline points="0,48% 7%,48%"/>
+        <polyline points="93%,48% 100%,48%"/>
+        <polyline points="0,52% 5%,52%"/>
+        <polyline points="95%,52% 100%,52%"/>
+        <line x1="0" y1="44%" x2="4%" y2="44%"/>
+        <line x1="96%" y1="44%" x2="100%" y2="44%"/>
+      </g>
+    </svg>
+
    <main class="ui" id="appRoot" data-mode="simple">
 
-      <!-- ── Serial Bar ─────────────────────────────────────────── -->
+      <!--  Serial Bar  -->
       <div class="serial-bar">
         <span class="serial-dot disconnected" id="serialDot"></span>
         <span class="serial-label">ARDUINO</span>
@@ -22,14 +137,11 @@
         <section class="scene" aria-label="Sun and moon cycle display">
           <div class="orbit orbit-left"></div>
           <div class="orbit orbit-right"></div>
-
           <div id="sun" class="celestial sun" aria-hidden="true">☀</div>
           <div id="moon" class="celestial moon" aria-hidden="true">☾</div>
-
           <button id="powerToggle" class="toggle" type="button" aria-pressed="true">
             <span class="knob"></span>
           </button>
-
           <div class="labels" aria-hidden="true">
             <span>ON</span>
             <span>OFF</span>
@@ -37,19 +149,39 @@
         </section>
 
         <section class="modes" aria-label="Mode buttons">
-          <button type="button" class="mode-btn">STROBE</button>
-          <button type="button" class="mode-btn">BLINK</button>
           <button id="advancedBtn" type="button" class="mode-btn">ADVANCED</button>
+        </section>
+
+        <!--  Timer Panel  -->
+        <section class="timer-panel" aria-label="Auto-off timer">
+          <div class="timer-title">⏱ AUTO-OFF TIMER</div>
+          <div class="timer-presets">
+            <button class="timer-btn" data-mins="1">1 MIN</button>
+            <button class="timer-btn" data-mins="5">5 MIN</button>
+            <button class="timer-btn" data-mins="15">15 MIN</button>
+            <button class="timer-btn" data-mins="30">30 MIN</button>
+            <button class="timer-btn" data-mins="60">1 HR</button>
+          </div>
+          <div class="timer-custom-row">
+            <input id="timerCustom" class="timer-custom-input" type="number" min="1" max="999" placeholder="min" />
+            <button id="timerCustomSet" class="timer-set-btn">SET</button>
+            <button id="timerCancel" class="timer-cancel-btn" hidden>CANCEL</button>
+          </div>
+          <div id="timerCountdown" class="timer-countdown" hidden></div>
         </section>
       </section>
 
       <section class="advanced-view" id="advancedView" aria-label="Advanced controls" hidden>
         <div class="advanced-card">
           <div class="adv-row">
+
+            <!-- Power -->
             <div class="adv-panel adv-power">
               <h2>MASTER POWER</h2>
               <button class="toggle small" type="button" aria-pressed="true"><span class="knob"></span></button>
             </div>
+
+            <!-- Core controls -->
             <div class="adv-panel adv-core">
               <h2>CORE CONTROLS</h2>
               <div class="picker-wrap">
@@ -61,9 +193,15 @@
                 <label class="rgb-row"><span class="rgb-lbl g-lbl">G</span><input id="sliderG" type="range" min="0" max="255" value="176" class="rgb-range g-range"><span id="valG" class="rgb-val">176</span></label>
                 <label class="rgb-row"><span class="rgb-lbl b-lbl">B</span><input id="sliderB" type="range" min="0" max="255" value="0"   class="rgb-range b-range"><span id="valB" class="rgb-val">000</span></label>
               </div>
-              <label for="brightnessSlider" class="brightness-label">BRIGHTNESS</label>
+              <label for="brightnessSlider" class="slider-label">BRIGHTNESS</label>
               <input id="brightnessSlider" class="brightness-slider" type="range" min="0" max="100" value="75" step="1" />
+              <label for="speedSlider" class="slider-label speed-label">
+                SPEED <span id="speedVal" class="speed-val">5</span>
+              </label>
+              <input id="speedSlider" class="speed-slider" type="range" min="1" max="10" value="5" step="1" />
             </div>
+
+            <!-- Display + timer -->
             <div class="adv-panel adv-display">
               <h2>DISPLAYS</h2>
               <div id="colorSwatch" class="color-swatch"></div>
@@ -72,24 +210,53 @@
                 <div id="levelValue">LEVEL: 75%</div>
                 <div id="rgbValue">RGB: 255,176,000</div>
               </div>
+              <!-- Compact timer in advanced panel -->
+              <div class="adv-timer">
+                <div class="timer-title small-title">⏱ AUTO-OFF</div>
+                <div class="timer-presets small-presets">
+                  <button class="timer-btn" data-mins="1">1m</button>
+                  <button class="timer-btn" data-mins="5">5m</button>
+                  <button class="timer-btn" data-mins="15">15m</button>
+                  <button class="timer-btn" data-mins="30">30m</button>
+                  <button class="timer-btn" data-mins="60">1h</button>
+                </div>
+                <div id="advTimerCountdown" class="timer-countdown adv-countdown" hidden></div>
+                <button id="advTimerCancel" class="timer-cancel-btn adv-cancel" hidden>✕ CANCEL</button>
+              </div>
             </div>
           </div>
+
+          <!-- modes row -->
           <div class="adv-row adv-buttons">
             <button class="adv-btn" type="button">STROBE</button>
             <button class="adv-btn" type="button">FADE</button>
             <button class="adv-btn" type="button">RAINBOW</button>
             <button class="adv-btn" type="button">POLICE</button>
           </div>
+          <div class="adv-row adv-buttons">
+            <button class="adv-btn new-mode" type="button">DISCO</button>
+            <button class="adv-btn new-mode" type="button">HEARTBEAT</button>
+            <button class="adv-btn new-mode" type="button">THUNDER</button>
+          </div>
           <div class="adv-row adv-buttons wide">
             <button class="adv-btn" type="button">CANDLE</button>
             <button class="adv-btn" type="button">SUNRISE</button>
           </div>
+          <div class="adv-row adv-buttons wide">
+            <button class="adv-btn new-mode" type="button">SOS</button>
+            <button class="adv-btn new-mode" type="button">BREATHE</button>
+            <button class="adv-btn new-mode" type="button">PARTY</button>
+          </div>
+
           <div class="back-wrap">
             <button id="backToSimpleBtn" class="back-btn" type="button">BACK TO SIMPLE MODE</button>
           </div>
         </div>
       </section>
     </main>
+
+    <!-- Tooltip -->
+    <div id="modeTooltip" class="mode-tooltip" style="display:none"></div>
 
     <script src="src/main.js"></script>
   </body>
