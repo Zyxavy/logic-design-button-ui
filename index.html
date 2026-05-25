@@ -8,18 +8,17 @@
   </head>
   <body>
 
-    <!-- PCB background SVG -->
     <svg class="bg" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
       <defs>
         <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
           <circle cx="10" cy="10" r="0.75" fill="#a8b4be" opacity="0.45"/>
         </pattern>
       </defs>
-      <!-- dot grid -->
       <rect width="100%" height="100%" fill="url(#grid)"/>
-
-     
     </svg>
+
+    <!-- Beat flash overlay (full screen tint on strong beats) -->
+    <div id="beatFlashOverlay" class="beat-flash-overlay"></div>
 
     <main class="ui" id="appRoot" data-mode="simple">
       <!--  Serial Bar  -->
@@ -33,8 +32,6 @@
         <section class="time-pill" aria-live="polite">TIME: <span id="clock">--:-- --</span></section>
 
         <section class="scene" aria-label="Sun and moon cycle display">
-          <div class="orbit orbit-left"></div>
-          <div class="orbit orbit-right"></div>
           <div id="sun" class="celestial sun" aria-hidden="true">☀</div>
           <div id="moon" class="celestial moon" aria-hidden="true">☾</div>
           <button id="powerToggle" class="toggle" type="button" aria-pressed="true">
@@ -123,7 +120,7 @@
             </div>
           </div>
 
-          <!-- modes row -->
+          <!-- Standard modes row -->
           <div class="adv-row adv-buttons">
             <button class="adv-btn" type="button">STROBE</button>
             <button class="adv-btn" type="button">FADE</button>
@@ -145,7 +142,61 @@
             <button class="adv-btn new-mode" type="button">PARTY</button>
           </div>
 
-          <div class="back-wrap">
+          <!-- MUSIC / BEAT SYNC button -->
+          <div class="adv-row adv-buttons wide" style="margin-bottom:4px">
+            <button id="beatSyncBtn" class="adv-btn beat-mode" type="button">MUSIC/BEAT SYNC</button>
+          </div>
+
+          <!-- Beat Sync Panel (hidden until activated) -->
+          <div id="beatSyncPanel" class="beat-sync-panel" hidden>
+            <div class="beat-header">
+              <span class="beat-title">BEAT SYNC</span>
+              <div class="beat-status-row">
+                <span class="beat-status-dot" id="beatDot"></span>
+                <span id="beatStatusText">IDLE</span>
+                <button class="beat-mic-btn" id="beatMicBtn" type="button">START MIC</button>
+              </div>
+            </div>
+
+            <!-- Waveform display -->
+            <div class="beat-wave-wrap">
+              <div class="beat-wave-grid"></div>
+              <div class="beat-center-line"></div>
+              <canvas id="beatWaveCanvas" width="600" height="90" aria-label="Audio waveform monitor"></canvas>
+            </div>
+
+            <!-- Meters -->
+            <div class="beat-meters">
+              <div class="beat-meter">
+                <div class="beat-meter-label">AMPLITUDE</div>
+                <div class="beat-meter-value" id="beatAmpVal">0</div>
+                <div class="beat-bar-wrap"><div class="beat-bar-fill" id="beatAmpBar"></div></div>
+              </div>
+              <div class="beat-meter">
+                <div class="beat-meter-label">PEAK</div>
+                <div class="beat-meter-value" id="beatPeakVal">0</div>
+                <div class="beat-bar-wrap"><div class="beat-bar-fill peak" id="beatPeakBar"></div></div>
+              </div>
+              <div class="beat-meter">
+                <div class="beat-meter-label">BPM EST.</div>
+                <div class="beat-meter-value" id="beatBpmVal">--</div>
+                <div class="beat-bar-wrap"><div class="beat-bar-fill" id="beatBpmBar" style="background:#3ecf5a"></div></div>
+              </div>
+            </div>
+
+            <!-- Controls -->
+            <div class="beat-controls">
+              <span class="beat-ctrl-label">SENSITIVITY</span>
+              <input type="range" class="beat-range" id="beatSensitivity" min="1" max="10" value="5" step="1" />
+              <span class="beat-ctrl-val" id="beatSensVal">5</span>
+
+              <span class="beat-ctrl-label" style="margin-left:10px">MIN BRIGHT</span>
+              <input type="range" class="beat-range" id="beatMinBright" min="0" max="50" value="5" step="1" />
+              <span class="beat-ctrl-val" id="beatMinVal">5</span>
+            </div>
+          </div>
+
+          <div class="back-wrap" style="margin-top:10px">
             <button id="backToSimpleBtn" class="back-btn" type="button">BACK TO SIMPLE MODE</button>
           </div>
         </div>
