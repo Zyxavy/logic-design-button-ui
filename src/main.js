@@ -273,10 +273,27 @@ setInterval(updateTime, 1000);
 
 //  Sun / Moon Animation
 const toggle = document.getElementById('powerToggle');
+const advToggle = document.querySelector('.adv-power .toggle');
 const sun    = document.getElementById('sun');
 const moon   = document.getElementById('moon');
 const PATH   = { cx: 54, cy: 60, rx: 87, ry: 85 };
 let isOn = true, animationFrame = null;
+
+function applyTheme(on) {
+  document.body.classList.toggle('dark-mode', !on);
+}
+
+function setPowerState(on) {
+  isOn = on;
+  toggle.classList.toggle('off', !on);
+  toggle.setAttribute('aria-pressed', on ? 'true' : 'false');
+  if (advToggle) {
+    advToggle.setAttribute('aria-pressed', String(on));
+    advToggle.classList.toggle('off', !on);
+  }
+  applyTheme(on);
+}
+
 
 function pointOnArc(progress) {
   const theta = Math.PI - (Math.PI * progress);
@@ -300,9 +317,9 @@ function animateCycle(targetOn) {
     renderFromProgress(from + (to - from) * eased);
     if (t < 1) { animationFrame = requestAnimationFrame(tick); }
     else {
-      animationFrame = null; isOn = targetOn;
-      toggle.classList.toggle('off', !isOn);
-      toggle.setAttribute('aria-pressed', isOn ? 'true' : 'false');
+      animationFrame = null;
+      setPowerState(targetOn);
+
     }
   }
   animationFrame = requestAnimationFrame(tick);
@@ -312,11 +329,11 @@ toggle.addEventListener('click', () => {
   const next = !isOn; animateCycle(next); send(next ? 'POWER:ON' : 'POWER:OFF');
 });
 
-document.querySelector('.adv-power .toggle')?.addEventListener('click', function () {
-  const pressed = this.getAttribute('aria-pressed') === 'true';
-  const next = !pressed;
-  this.setAttribute('aria-pressed', String(next));
-  this.classList.toggle('off', !next);
+advToggle?.addEventListener('click', function () {
+  const next = !isOn;
+  setPowerState(next);
+  animateCycle(next);
+
   send(next ? 'POWER:ON' : 'POWER:OFF');
 });
 
@@ -440,8 +457,6 @@ function startTimer(minutes) {
       timerEndTime  = null;
       send('POWER:OFF');
       animateCycle(false);
-      const advToggle = document.querySelector('.adv-power .toggle');
-      if (advToggle) { advToggle.setAttribute('aria-pressed', 'false'); advToggle.classList.add('off'); }
       return;
     }
     setCountdownText(formatCountdown(remaining));
@@ -818,6 +833,7 @@ function triggerBeatFlash(rms) {
 renderFromProgress(0);
 syncSlidersToBase();
 updateDisplay();
+setPowerState(true);
 requestAnimationFrame(() => {
   const [h,s,v] = rgbToHsv(baseR, baseG, baseB);
   currentHue=h; currentSat=s; currentVal=v;
