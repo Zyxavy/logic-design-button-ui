@@ -273,27 +273,10 @@ setInterval(updateTime, 1000);
 
 //  Sun / Moon Animation
 const toggle = document.getElementById('powerToggle');
-const advToggle = document.querySelector('.adv-power .toggle');
-const sun    = document.getElementById('sun');
-const moon   = document.getElementById('moon');
-const PATH   = { cx: 54, cy: 60, rx: 87, ry: 85 };
-let isOn = false, animationFrame = null;
-
-function applyTheme(on) {
-  document.body.classList.toggle('dark-mode', !on);
-}
-
-function setPowerState(on) {
-  isOn = on;
-  toggle.classList.toggle('off', !on);
-  toggle.setAttribute('aria-pressed', on ? 'true' : 'false');
-  if (advToggle) {
-    advToggle.setAttribute('aria-pressed', String(on));
-    advToggle.classList.toggle('off', !on);
-  }
-  applyTheme(on);
-}
-
+const sun = document.getElementById('sun');
+const moon = document.getElementById('moon');
+const PATH = { cx: 54, cy: 60, rx: 57, ry: 85 };
+let isOn = true, animationFrame = null;
 
 function pointOnArc(progress) {
   const theta = Math.PI - (Math.PI * progress);

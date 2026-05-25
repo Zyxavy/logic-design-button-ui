@@ -30,38 +30,7 @@ body {
   transition: background-color 0.9s ease, color 0.45s ease;
 }
 
-body.dark-mode {
-  background-color: #05070a;
-  color: #f2f6fa;
-}
-
-.bg {
-  transition: filter 0.9s ease;
-
-}
-
-.bg circle {
-  transition: fill 0.9s ease, opacity 0.9s ease, filter 0.9s ease, r 0.9s ease;
-}
-
-body.dark-mode .bg {
-  filter: brightness(1.55) contrast(1.2);
-}
-
-body.dark-mode .bg circle {
-  fill: #f6fbff;
-  opacity: 0.95;
-  r: 1.15;
-  filter: drop-shadow(0 0 2px #ffffff) drop-shadow(0 0 6px #9fd8ff);
-  animation: star-twinkle 2.2s ease-in-out infinite alternate;
-}
-
-@keyframes star-twinkle {
-  from { opacity: 0.75; }
-  to   { opacity: 1; }
-}
-
-
+/* PCB background SVG */
 .bg {
   position: fixed;
   top: 0; left: 0;
@@ -71,6 +40,7 @@ body.dark-mode .bg circle {
   display: block;
 }
 
+/*  Main UI sits above PCB  */
 .ui {
   position: relative;
   z-index: 1;
@@ -118,9 +88,10 @@ body.dark-mode .bg circle {
 }
 .scene { margin-top: 18px; width: 270px; height: 250px; position: relative; }
 
-.celestial { position: absolute; left: 50%; transform: translate(-50%, -50%); width: 72px; height: 72px; border-radius: 50%; display: grid; place-items: center; font-size: 74px; }
-.sun  { filter: drop-shadow(0 0 8px #eca521); }
-.moon { filter: drop-shadow(0 0 7px #8b8b7c); }
+/*  Celestial */
+.celestial { position: absolute; left: 50%; transform: translate(-50%, -50%); width: 62px; height: 62px; border-radius: 50%; display: grid; place-items: center; font-size: 54px; }
+.sun  { filter: drop-shadow(0 0 8px #ffcb67); }
+.moon { filter: drop-shadow(0 0 7px #f6f2ad); }
 
 .toggle { position: absolute; left: 50%; top: 128px; transform: translate(-50%, -50%); width: 126px; height: 56px; border: 4px solid #111; border-radius: 28px; background: linear-gradient(#d4d9de, #b9c2c9); cursor: pointer; padding: 4px; }
 .toggle.small { position: static; transform: none; margin-top: 14px; }
