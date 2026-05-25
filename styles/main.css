@@ -21,16 +21,40 @@ body {
   margin: 0;
   min-height: 100vh;
   font-family: "Courier New", Courier, monospace;
-  background-color: var(--bg);
+  background: var(--bg);
   color: var(--ink);
   display: grid;
   place-items: center;
   position: relative;
   overflow-x: hidden;
-  transition: background-color 0.9s ease, color 0.45s ease;
 }
 
-/* PCB background SVG */
+body.dark-mode {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+.bg circle {
+  transition: fill 0.3s ease, opacity 0.3s ease, filter 0.3s ease, r 0.3s ease;
+}
+
+body.dark-mode .bg {
+  filter: brightness(1.35) contrast(1.15);
+}
+
+body.dark-mode .bg circle {
+  fill: #f6fbff;
+  opacity: 0.95;
+  r: 1.15;
+  filter: drop-shadow(0 0 2px #ffffff) drop-shadow(0 0 6px #9fd8ff);
+  animation: star-twinkle 2.2s ease-in-out infinite alternate;
+}
+
+@keyframes star-twinkle {
+  from { opacity: 0.75; }
+  to   { opacity: 1; }
+}
+
+
 .bg {
   position: fixed;
   top: 0; left: 0;
