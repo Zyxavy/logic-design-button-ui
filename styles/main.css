@@ -21,24 +21,31 @@ body {
   margin: 0;
   min-height: 100vh;
   font-family: "Courier New", Courier, monospace;
-  background: var(--bg);
+  background-color: var(--bg);
   color: var(--ink);
   display: grid;
   place-items: center;
   position: relative;
   overflow-x: hidden;
+  transition: background-color 0.9s ease, color 0.45s ease;
 }
 
 body.dark-mode {
-  filter: invert(1) hue-rotate(180deg);
+  background-color: #05070a;
+  color: #f2f6fa;
+}
+
+.bg {
+  transition: filter 0.9s ease;
+
 }
 
 .bg circle {
-  transition: fill 0.3s ease, opacity 0.3s ease, filter 0.3s ease, r 0.3s ease;
+  transition: fill 0.9s ease, opacity 0.9s ease, filter 0.9s ease, r 0.9s ease;
 }
 
 body.dark-mode .bg {
-  filter: brightness(1.35) contrast(1.15);
+  filter: brightness(1.55) contrast(1.2);
 }
 
 body.dark-mode .bg circle {
